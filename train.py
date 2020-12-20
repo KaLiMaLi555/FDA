@@ -19,6 +19,7 @@ CS_weights = np.array( (1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
                         1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0), dtype=np.float32 )
 CS_weights = torch.from_numpy(CS_weights)
 
+  #------------------------ This file is used for training of first round (T=0). Pseudo-label generation is not required. -------------------------------------------#
 
 def main():
     opt = TrainOptions()
@@ -32,14 +33,16 @@ def main():
         os.makedirs(os.path.join(args.snapshot_dir, 'logs'))
     opt.print_options(args)
 
+    # Data-Loader Initialization
     sourceloader, targetloader = CreateSrcDataLoader(args), CreateTrgDataLoader(args)
     sourceloader_iter, targetloader_iter = iter(sourceloader), iter(targetloader)
-
+    
+    # Model Initialization
     model, optimizer = CreateModel(args)
 
     start_iter = 0
     if args.restore_from is not None:
-        start_iter = int(args.restore_from.rsplit('/', 1)[1].rsplit('_')[1])
+        start_iter = int(args.restore_from.rsplit('/', 1)[1].rsplit('_')[1])        # Used when restarting training from a checkpoint.
 
     cudnn.enabled = True
     cudnn.benchmark = True
@@ -55,9 +58,9 @@ def main():
     loss_val_list = []
 
     mean_img = torch.zeros(1, 1)
-    class_weights = Variable(CS_weights).cuda()
+    class_weights = Variable(CS_weights).cuda()                                     # All class weights are taken to be 1.
 
-    _t['iter time'].tic()
+    _t['iter time'].tic() # Timer starts.
     for i in range(start_iter, args.num_steps):
         model.adjust_learning_rate(args, optimizer, i)                               # adjust learning rate
         optimizer.zero_grad()                                                        # zero grad

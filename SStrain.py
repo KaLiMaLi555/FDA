@@ -19,6 +19,8 @@ CS_weights = np.array( (1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
                         1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0), dtype=np.float32 )
 CS_weights = torch.from_numpy(CS_weights)
 
+#------------------- This file is used for self supervised training using the pseudo labels i.e. For T=1 T=2 etc. --------------------#
+
 def main():
     opt = TrainOptions()
     args = opt.initialize()
@@ -34,7 +36,7 @@ def main():
     sourceloader, targetloader = CreateSrcDataLoader(args), CreateTrgDataLoader(args)
     sourceloader_iter, targetloader_iter = iter(sourceloader), iter(targetloader)
 
-    pseudotrgloader = CreatePseudoTrgLoader(args)
+    pseudotrgloader = CreatePseudoTrgLoader(args)     # Pseudo labels generated from previous round are used as target.
     pseudoloader_iter = iter(pseudotrgloader)
 
     model, optimizer = CreateModel(args)

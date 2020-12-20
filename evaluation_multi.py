@@ -30,22 +30,22 @@ def fast_hist(a, b, n):
     return np.bincount( n*a[k].astype(int)+b[k], minlength=n**2 ).reshape(n, n)
 
 def per_class_iu(hist):
-    return np.diag(hist) / ( hist.sum(1)+hist.sum(0)-np.diag(hist) )
+    return np.diag(hist) / ( hist.sum(1)+hist.sum(0)-np.diag(hist) )    # Diagonal elements/ Sum of ith row and ith colum for (i,i).
 
-def label_mapping(input, mapping):
+def label_mapping(input, mapping):   # Mapping cityscapes 35 classes to 19 classes.
     output = np.copy(input)
     for ind in range(len(mapping)):
         output[ input==mapping[ind][0] ] = mapping[ind][1]
     return np.array(output, dtype=np.int64)
 
-def compute_mIoU( gt_dir, pred_dir, devkit_dir='', restore_from='' ):
+def compute_mIoU( gt_dir, pred_dir, devkit_dir='', restore_from='' ):   # Used to calculate mIoU for all classes.
     with open( osp.join(devkit_dir, 'info.json'),'r' ) as fp:
         info = json.load(fp)
     num_classes = np.int(info['classes'])
     print('Num classes', num_classes)
 
     name_classes = np.array(info['label'], dtype=np.str)
-    mapping = np.array( info['label2train'],dtype=np.int )
+    mapping = np.array( info['label2train'],dtype=np.int )   # Mapping cityscapes 35 classes to 19 classes.
     hist = np.zeros( (num_classes, num_classes) )
 
     image_path_list = osp.join( devkit_dir, 'val.txt')
@@ -92,6 +92,7 @@ def main():
     if not os.path.exists(args.save):
         os.makedirs(args.save)
 
+    # 3 models are used because MBT method is used.
     args.restore_from = args.restore_opt1
     model1 = CreateModel(args)
     model1.eval()
