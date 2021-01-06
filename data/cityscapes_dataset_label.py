@@ -5,16 +5,34 @@ import os.path as osp
 from PIL import Image
 from torch.utils import data
 
+
 class cityscapesDataSetLabel(data.Dataset):
+    """
+    Class to help load the Cityscapes dataset labels
+    """
     # for reading CS with labels
+
     def __init__(self, root, list_path, crop_size=(11, 11), mean=(128, 128, 128), max_iters=None, set='val'):
+        """
+        Initialises the object
+
+        Args:
+            root (string): Cityscapes directory path
+            list_path (string): Path to image list file
+            crop_size (tuple, optional): resizes images. Defaults to (11, 11).
+            mean (tuple, optional): value for mean subtraction. Defaults to (128, 128, 128).
+            max_iters (int, optional): maximum number of iterations. Defaults to None.
+            set (str, optional): either set to 'train' or 'val'. Defaults to 'val'.
+        """
         self.root = root    # cityscapes
-        self.list_path = list_path # list of image names
+        self.list_path = list_path  # list of image names
         self.crop_size = crop_size
         self.mean = mean
         self.img_ids = [i_id.strip() for i_id in open(list_path)]
-        if not max_iters==None:
-            self.img_ids = self.img_ids * int( np.ceil(float(max_iters)/len(self.img_ids)) )
+
+        if not max_iters == None:
+            self.img_ids = self.img_ids * \
+                int(np.ceil(float(max_iters)/len(self.img_ids)))
 
         self.files = []
         self.ignore_label = 255
@@ -25,19 +43,35 @@ class cityscapesDataSetLabel(data.Dataset):
                               26: 13, 27: 14, 28: 15, 31: 16, 32: 17, 33: 18}
 
     def __len__(self):
+        """
+        Returns:
+            int: Returns number of images
+        """
         return len(self.img_ids)
 
     def __getitem__(self, index):
-        name = self.img_ids[index]   # aachen/aachen_000000_000019_leftImg8bit.png
-        image = Image.open(osp.join(   self.root, "leftImg8bit/%s/%s" % (self.set, name)   )).convert('RGB')
+        """
+        Interator function
+
+        Args:
+            index (int)
+
+        Returns:
+            tuple: (image, label, image.shape, image.name)
+        """
+        # aachen/aachen_000000_000019_leftImg8bit.png
+        name = self.img_ids[index]
+        image = Image.open(
+            osp.join(self.root, "leftImg8bit/%s/%s" % (self.set, name))).convert('RGB')
         lbname = name.replace("leftImg8bit", "gtFine_labelIds")
-        label = Image.open(osp.join(   self.root, "gtFine/%s/%s" % (self.set, lbname)   ))
+        label = Image.open(
+            osp.join(self.root, "gtFine/%s/%s" % (self.set, lbname)))
 
         # resize
-        image = image.resize( self.crop_size, Image.BICUBIC )
-        label = label.resize( self.crop_size, Image.NEAREST )
-        image = np.asarray( image, np.float32 )
-        label = np.asarray( label, np.float32 )
+        image = image.resize(self.crop_size, Image.BICUBIC)
+        label = label.resize(self.crop_size, Image.NEAREST)
+        image = np.asarray(image, np.float32)
+        label = np.asarray(label, np.float32)
 
         label_copy = self.ignore_label * np.ones(label.shape, dtype=np.float32)
         for k, v in self.id_to_trainid.items():
@@ -49,4 +83,3 @@ class cityscapesDataSetLabel(data.Dataset):
         image = image.transpose((2, 0, 1))
 
         return image.copy(), label_copy.copy(), np.array(size), name
-

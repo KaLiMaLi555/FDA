@@ -85,7 +85,7 @@ def main():
             thres.append(0)
             continue        
         x = np.sort(x)
-        thres.append(x[np.int(np.round(len(x)*0.66))])
+        thres.append(x[np.int(np.round(len(x)*0.66))])  # paper mentions taking top 66% or 0.9 as threshold
     print( thres )
     thres = np.array(thres)
     thres[thres>0.9]=0.9
