@@ -9,6 +9,9 @@ import os
 from options.test_options import TestOptions
 import scipy.io as sio
 
+
+#------------------- This file is used to generate pseudo labels for self supervised training. --------------------#
+
 def main():
     opt = TestOptions()
     args = opt.initialize()
