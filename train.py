@@ -21,6 +21,7 @@ CS_weights = np.array((1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
                        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0), dtype=np.float32)
 CS_weights = torch.from_numpy(CS_weights)
 
+
 wandb.login()
 wandb.init(project="FDA-test")
 
@@ -69,10 +70,12 @@ def main():
     loss_val_list = []
 
     mean_img = torch.zeros(1, 1)
+
     # All class weights are taken to be 1.
     class_weights = Variable(CS_weights).cuda()
 
     _t['iter time'].tic()  # Timer starts.
+
     for i in range(start_iter, args.num_steps):
         # adjust learning rate
         model.adjust_learning_rate(args, optimizer, i)

@@ -66,10 +66,12 @@ def label_mapping(input, mapping):
     Returns:
         np,array: converted labels
     """
+
     output = np.copy(input)
     for ind in range(len(mapping)):
         output[input == mapping[ind][0]] = mapping[ind][1]
     return np.array(output, dtype=np.int64)
+
 
 
 def compute_mIoU(gt_dir, pred_dir, devkit_dir='', restore_from=''):
@@ -88,6 +90,7 @@ def compute_mIoU(gt_dir, pred_dir, devkit_dir='', restore_from=''):
     print('Num classes', num_classes)
 
     name_classes = np.array(info['label'], dtype=np.str)
+
     # Mapping cityscapes 35 classes to 19 classes.
     mapping = np.array(info['label2train'], dtype=np.int)
     hist = np.zeros((num_classes, num_classes))
