@@ -8,9 +8,10 @@ from model import CreateSSLModel
 import os
 from options.test_options import TestOptions
 import scipy.io as sio
+import gzip     # to compresss numpy files so that less cache space is required
 
 
-#------------------- This file is used to generate pseudo labels for self supervised training. --------------------#
+                    #####This is the optimized pseudo label generation file which takes at max 12 gb CPU RAM and 3 GB GPU ram.#####
 
 def main():
     opt = TestOptions()
@@ -42,13 +43,17 @@ def main():
     IMG_MEAN = torch.reshape( torch.from_numpy(IMG_MEAN), (1,3,1,1)  )
     mean_img = torch.zeros(1, 1)
 
-    predicted_label = np.zeros((len(targetloader), 512, 1024))
-    predicted_prob = np.zeros((len(targetloader), 512, 1024))
+   
     image_name = []
+
+    x = [None]*19     # x values for all 19 classes    
+  
+
+    cachepath = "../cache"    # Directory to save the numpy files as cache.
 
     with torch.no_grad():
         for index, batch in enumerate(targetloader):
-            if index % 100 == 0:
+            if index % 1 == 0:
                 print( '%d processd' % index )
             image, _, name = batch
             if mean_img.shape[-1] < 2:
@@ -74,34 +79,72 @@ def main():
             output = output.transpose(1,2,0)
        
             label, prob = np.argmax(output, axis=2), np.max(output, axis=2)
-            predicted_label[index] = label.copy()
-            predicted_prob[index] = prob.copy()
+            
+           
+            # Saving the prob and label files for each index seperately so that while loading the whole array need not be loaded in turn saving a lot of CPU ram.
+
+            f1 = gzip.GzipFile(os.path.join(cachepath, "label_" + str(index))+'.npy.gz', "w")
+            f2 = gzip.GzipFile(os.path.join(cachepath, "prob_" + str(index))+'.npy.gz', "w")
+            np.save(f1,label)
+            np.save(f2, prob)
+            f1.close()
+            f2.close()
+
+
+            for i in range(19):
+                d = prob[label==i]
+                if(len(d)==0):
+                  continue
+                 
+                if x[i] is None:
+                    x[i]=d
+                else:   
+                    x[i]= np.concatenate((x[i],d))
+                  
+
             image_name.append(name[0])
-        
+          
+
+    thres = []
+
+    
+
     thres = []
     for i in range(19):
-        x = predicted_prob[predicted_label==i]
-        if len(x) == 0:
+        if x[i] is None:
             thres.append(0)
-            continue        
-        x = np.sort(x)
-        thres.append(x[np.int(np.round(len(x)*0.66))])
-    print( thres )
-    thres = np.array(thres)
-    thres[thres>0.9]=0.9
-    print( thres )
+            continue
+        temp=x[i]
+        temp=np.sort(temp)
+        print("temp[np.int(np.round(len(temp*0.66))]", temp[np.int(np.round(len(temp)*0.66))])
+        thres.append(temp[np.int(np.round(len(temp)*0.66))].item())
+       
 
+    # print(thres)
+    thres = np.array(thres)
+    thres[thres > 0.9] = 0.9
+    print("Cuda", thres)
+
+    
     for index in range(len(targetloader)):
         name = image_name[index]
-        label = predicted_label[index]
-        prob = predicted_prob[index]
+
+        #Loading the prob and label files for each index.
+        f3 = gzip.GzipFile(os.path.join(cachepath, "label_" + str(index))+'.npy.gz', "r")
+        f4 = gzip.GzipFile(os.path.join(cachepath, "prob_" + str(index))+'.npy.gz', "r")
+        label = np.load(f3)
+        prob = np.load(f4)
+        
         for i in range(19):
             label[   (prob<thres[i]) * (label==i)   ] = 255  
         output = np.asarray(label, dtype=np.uint8)
         output = Image.fromarray(output)
         name = name.split('/')[-1]
+
+        #Deleting the prob and label files to clear the cache space.
+        os.remove(os.path.join(cachepath,"label_"+str(index)+".npy.gz"))
+        os.remove(os.path.join(cachepath,"prob_"+str(index)+".npy.gz"))
         output.save('%s/%s' % (args.save, name)) 
-    
     
 if __name__ == '__main__':
     main()
