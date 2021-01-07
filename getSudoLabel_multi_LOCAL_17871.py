@@ -113,7 +113,6 @@ def main():
     for i in range(19):
         if x[i] is None:
             thres.append(0)
-<<<<<<< HEAD
             continue
         temp=x[i]
         temp=np.sort(temp)
@@ -122,12 +121,6 @@ def main():
        
 
     # print(thres)
-=======
-            continue        
-        x = np.sort(x)
-        thres.append(x[np.int(np.round(len(x)*0.66))])  # paper mentions taking top 66% or 0.9 as threshold
-    print( thres )
->>>>>>> upstream/master
     thres = np.array(thres)
     thres[thres > 0.9] = 0.9
     print("Cuda", thres)
