@@ -84,7 +84,7 @@ We have prepared a well documented version of the [original repository](https://
    
    Pretrained models on the Synthia -> CityScapes task using VGG backbone [link.](https://drive.google.com/file/d/1SC7sxKtic_7ClFmAZDlrBqRaL0pvKYZ8/view?usp=sharing)
    
-7. Models trained by us
+7. Models trained by the team at AGV.AI (IITKGP)
     
    | Beta Value | DeepLab | VGG16 |
    |------------|---------|-------|
