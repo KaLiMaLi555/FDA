@@ -98,6 +98,17 @@ We have prepared a well documented version of the [original repository](https://
    | 0.05 (T=2) | [link](https://drive.google.com/drive/folders/1z-4fptNdhfFzledC_0YQ2sfOY9qJHCrB?usp=sharing)    | [link](https://drive.google.com/drive/folders/1-RrWb11LGBcdiLaq1SQdjsPOdy7kxTXz?usp=sharing)  |
    | 0.09 (T=2) | [link](https://drive.google.com/drive/folders/1bNG4jdqinHSC1ELYFYyqpCj6r4Li-8Sz?usp=sharing)    | [link](https://drive.google.com/drive/folders/1XUx3nv614A7d8LCTdRyTn9lupQhpTqpS?usp=sharing)  |
 
+8. Files train.py and SStrain_VGG.py are integrated with wandb and will log the source and target loss at the frequency inputted in the argument. You will just have to login        during the initial run of the code which is done using
+
+   > wandb.login()
+   
+   And the logging process is started using 
+   
+   > wandb.init()
+   
+   The values are logged using the command
+   
+   > wandb.log(..)
 
 **Acknowledgment**
 
