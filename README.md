@@ -110,6 +110,10 @@ We have prepared a well documented version of the [original repository](https://
    
    > wandb.log(..)
 
+9. Our team has optimised the pseudo label generation code (getSudoLabel_multi.py) and the difference between the pseudo labels generated from the original and optimised code is shown below:
+
+![Image of Pseudo Labels](https://github.com/thefatbandit/FDA/blob/master/demo_images/example2.png)
+
 **Acknowledgment**
 
 Code adapted from [BDL.](https://github.com/liyunsheng13/BDL)
