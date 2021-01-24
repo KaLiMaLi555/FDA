@@ -12,6 +12,8 @@ Step 3: Apply inverse FFT to the modified source spectrum.
 
 ![Image of FDA](https://github.com/YanchaoYang/FDA/blob/master/demo_images/FDA.png)
 
+We have prepared a well documented version of the [original repository](https://github.com/YanchaoYang/FDA) with the code flow available [here](https://drive.google.com/file/d/1Ondj__Dqzf6bytJeN4gwnUpyf3AIuyjy/view?usp=sharing).
+
 # Usage
 
 1. FDA Demo
@@ -73,13 +75,30 @@ Step 3: Apply inverse FFT to the modified source spectrum.
 
    VGG initializations can be downloaded through this [link.](https://drive.google.com/file/d/1pgHtwBKUcbAyItnU4hgMb96UfY1PGiCv/view?usp=sharing)
    
+    > python3 train.py --model='VGG' --learning-rate=1e-5 --snapshot-dir='../checkpoints/FDA' --init-weights='../checkpoints/FDA/init_weight/vggfcn_gta5_init.pth' 
+    ---LB=0.01 --entW=0.005 --ita=2.0 --switch2entropy=0
+   
    Pretrained models on the Synthia -> CityScapes task using DeepLab backbone [link.](https://drive.google.com/file/d/1FRI_KIWnubyknChhTOAVl6ZsPxzvEXce/view?usp=sharing)
    
    Pretrained models on the GTA5 -> CityScapes task using VGG backbone [link.](https://drive.google.com/file/d/15Az8DFaLw1kTgt82KX9rI6S85n7iesdc/view?usp=sharing)
    
    Pretrained models on the Synthia -> CityScapes task using VGG backbone [link.](https://drive.google.com/file/d/1SC7sxKtic_7ClFmAZDlrBqRaL0pvKYZ8/view?usp=sharing)
    
-   
+7. Models trained by us
+    
+   | Beta Value | DeepLab | VGG16 |
+   |------------|---------|-------|
+   | 0.01 (T=0) | [link](https://drive.google.com/drive/folders/1101cMmEKlkBQ-oMLFWLaU0sn_y-AHRqs?usp=sharing)    | [link](https://drive.google.com/drive/folders/1py_CXSFTu9t4jNDVOb2RmtVQgXfSm7ur?usp=sharing)  |
+   | 0.05 (T=0) | [link](https://drive.google.com/drive/folders/1PEYoOe65TRIWcNG45qMEMZAL7hjWbO5U?usp=sharing)    | [link](https://drive.google.com/drive/folders/1-NlVPgHvFBcN0Wb4oA5vkOdeRR1Z_7p2?usp=sharing)  |
+   | 0.09 (T=0) | [link](https://drive.google.com/drive/folders/17qXK696NaQv5tBnOFLZ_mTWPp8NAY5jQ?usp=sharing)    | [link](https://drive.google.com/drive/folders/1ZwuBmLk6D_8YgsoG3gEzOeE2Ohh0htiX?usp=sharing)  |
+   | 0.01 (T=1) | [link](https://drive.google.com/drive/folders/12Ae-TrGcIAb91gm49PlA-Quc98A7J_Xe?usp=sharing)    | [link](https://drive.google.com/drive/folders/1ldFTVY55QEUj1NY-h7_UXYKGoMlnO6s-?usp=sharing)  |
+   | 0.05 (T=1) | [link](https://drive.google.com/drive/folders/1YomOo27v2uIWNy78wjG7mdLl5D_JA5d0?usp=sharing)    | [link](https://drive.google.com/drive/folders/1yhGNQiWS2dBcw3IRr1mTEZJ3F28Jy203?usp=sharing)  |
+   | 0.09 (T=1) | [link](https://drive.google.com/drive/folders/1Yi99lTKkKxzMWsm_0vH0kCcHH36CdzgQ?usp=sharing)    | [link](https://drive.google.com/drive/folders/1-VT3vLlxqV3cj0NaMzcFznrPM4Arfgjw?usp=sharing)  |
+   | 0.01 (T=2) | [link](https://drive.google.com/drive/folders/11JzUB4uYA3e_lB9Zoe9-iaGPbSXNXwYT?usp=sharing)    | [link](https://drive.google.com/drive/folders/1-IybTsqIabjOpZzj8urlDxONoey8jCSb?usp=sharing)  |
+   | 0.05 (T=2) | [link](https://drive.google.com/drive/folders/1z-4fptNdhfFzledC_0YQ2sfOY9qJHCrB?usp=sharing)    | [link](https://drive.google.com/drive/folders/1-RrWb11LGBcdiLaq1SQdjsPOdy7kxTXz?usp=sharing)  |
+   | 0.09 (T=2) | [link](https://drive.google.com/drive/folders/1bNG4jdqinHSC1ELYFYyqpCj6r4Li-8Sz?usp=sharing)    | [link](https://drive.google.com/drive/folders/1XUx3nv614A7d8LCTdRyTn9lupQhpTqpS?usp=sharing)  |
+
+
 **Acknowledgment**
 
 Code adapted from [BDL.](https://github.com/liyunsheng13/BDL)
