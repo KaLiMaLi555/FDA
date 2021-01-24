@@ -20,8 +20,8 @@ CS_weights = np.array( (1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
                         1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0), dtype=np.float32 )
 CS_weights = torch.from_numpy(CS_weights)
 
-wandb.login(key="796314235534596892e37219ade58e76bde50e7c")
-wandb.init(project="FDA-test",resume='allow',id='ieb2cvo5')
+wandb.login()
+wandb.init(project="FDA-test")
 
 def main():
     opt = TrainOptions()
