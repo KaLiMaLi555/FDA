@@ -76,7 +76,7 @@ We have prepared a well documented version of the [original repository](https://
    VGG initializations can be downloaded through this [link.](https://drive.google.com/file/d/1pgHtwBKUcbAyItnU4hgMb96UfY1PGiCv/view?usp=sharing)
    
     > python3 train.py --model='VGG' --learning-rate=1e-5 --snapshot-dir='../checkpoints/FDA' --init-weights='../checkpoints/FDA/init_weight/vggfcn_gta5_init.pth' 
-    ---LB=0.01 --entW=0.005 --ita=2.0 --switch2entropy=0
+    --LB=0.01 --entW=0.005 --ita=2.0 --switch2entropy=0
    
    Pretrained models on the Synthia -> CityScapes task using DeepLab backbone [link.](https://drive.google.com/file/d/1FRI_KIWnubyknChhTOAVl6ZsPxzvEXce/view?usp=sharing)
    
